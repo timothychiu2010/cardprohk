@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ChevronLeft, ChevronRight, PieChart as PieChartIcon } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, ChartPie as PieChartIcon } from 'lucide-react'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
 import { Transaction, CARDS_CONFIG, CATEGORIES, getCategoryLabel, Category } from '@/lib/cards-config'
 
@@ -186,7 +186,7 @@ export function RecordsDetailModal({
           animate={{ y: 0 }}
           exit={{ y: '100%' }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="absolute bottom-0 left-0 right-0 max-h-[85vh] bg-zinc-900 rounded-t-3xl overflow-hidden"
+          className="absolute bottom-0 left-0 right-0 max-h-[90vh] bg-zinc-900 rounded-t-3xl overflow-hidden flex flex-col"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Handle */}
@@ -263,7 +263,7 @@ export function RecordsDetailModal({
           </div>
 
           {/* Content */}
-          <div className="px-5 py-6 overflow-y-auto max-h-[calc(85vh-200px)]">
+          <div className="flex-1 overflow-y-auto px-4 py-4">
             {monthTransactions.length === 0 ? (
               <div className="text-center py-10">
                 <PieChartIcon className="w-12 h-12 text-white/20 mx-auto mb-3" />
@@ -272,69 +272,72 @@ export function RecordsDetailModal({
             ) : (
               <>
                 {/* Total */}
-                <div className="text-center mb-6">
+                <div className="text-center mb-4">
                   <div className="text-white/50 text-sm mb-1">
                     {type === 'reward' ? '總回贈' : '總簽賬'}
                   </div>
-                  <div className={`text-3xl font-bold ${type === 'reward' ? 'text-emerald-400' : 'text-white'}`}>
+                  <div className={`text-4xl font-bold ${type === 'reward' ? 'text-emerald-400' : 'text-white'}`}>
                     ${total.toFixed(type === 'reward' ? 2 : 0)}
                   </div>
                 </div>
 
-                {/* Pie Chart */}
-                <div className="h-64 mb-6">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={chartData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={50}
-                        outerRadius={80}
-                        paddingAngle={2}
-                        dataKey="value"
-                      >
-                        {chartData.map((_, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={colors[index % colors.length]}
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip content={<CustomTooltip />} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-
-                {/* Legend / Breakdown */}
-                <div className="space-y-2">
-                  {chartData
-                    .sort((a, b) => b.value - a.value)
-                    .map((item, index) => {
-                      const percentage = total > 0 ? ((item.value / total) * 100).toFixed(1) : 0
-                      return (
-                        <div
-                          key={item.name}
-                          className="flex items-center gap-3 p-3 bg-white/5 rounded-xl"
+                {/* Main Content Grid */}
+                <div className="grid grid-cols-2 gap-4 h-[280px]">
+                  {/* Pie Chart */}
+                  <div className="flex items-center justify-center">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={chartData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={40}
+                          outerRadius={70}
+                          paddingAngle={2}
+                          dataKey="value"
                         >
+                          {chartData.map((_, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={colors[index % colors.length]}
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip content={<CustomTooltip />} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Legend / Breakdown */}
+                  <div className="space-y-1.5 overflow-y-auto pr-2">
+                    {chartData
+                      .sort((a, b) => b.value - a.value)
+                      .map((item, index) => {
+                        const percentage = total > 0 ? ((item.value / total) * 100).toFixed(1) : 0
+                        return (
                           <div
-                            className="w-3 h-3 rounded-full shrink-0"
-                            style={{ backgroundColor: colors[index % colors.length] }}
-                          />
-                          <div className="flex-1 min-w-0">
-                            <div className="text-white text-sm font-medium truncate">
-                              {item.name}
+                            key={item.name}
+                            className="flex items-center gap-2 p-2 bg-white/5 rounded-lg"
+                          >
+                            <div
+                              className="w-2.5 h-2.5 rounded-full shrink-0"
+                              style={{ backgroundColor: colors[index % colors.length] }}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <div className="text-white text-xs font-medium truncate">
+                                {item.name}
+                              </div>
+                            </div>
+                            <div className="text-right shrink-0">
+                              <div className={`text-xs font-bold ${type === 'reward' ? 'text-emerald-400' : 'text-white'}`}>
+                                ${item.value.toFixed(type === 'reward' ? 2 : 0)}
+                              </div>
+                              <div className="text-[9px] text-white/40">{percentage}%</div>
                             </div>
                           </div>
-                          <div className="text-right shrink-0">
-                            <div className={`text-sm font-bold ${type === 'reward' ? 'text-emerald-400' : 'text-white'}`}>
-                              ${item.value.toFixed(type === 'reward' ? 2 : 0)}
-                            </div>
-                            <div className="text-[10px] text-white/40">{percentage}%</div>
-                          </div>
-                        </div>
-                      )
-                    })}
+                        )
+                      })}
+                  </div>
                 </div>
               </>
             )}

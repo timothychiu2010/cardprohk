@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { TrendingUp, AlertTriangle, Zap, Lock, Trash2, Clock, Calendar, ChevronRight, ChevronDown } from 'lucide-react'
+import { TrendingUp, TriangleAlert as AlertTriangle, Zap, Lock, Trash2, Clock, Calendar, ChevronRight, ChevronDown } from 'lucide-react'
 import { CARDS_CONFIG, Category, CATEGORIES, getCardRule, Transaction, getCategoryLabel } from '@/lib/cards-config'
 import { useState } from 'react'
 import { RecordsDetailModal } from './records-detail-modal'
@@ -237,14 +237,13 @@ export function RecordsView({
                 className="p-4 cursor-pointer hover:bg-white/5 transition-colors"
                 onClick={() => setExpandedCard(isExpanded ? null : card.id)}
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={`w-10 h-6 rounded-md bg-gradient-to-r ${card.color}`} />
-                  <div className="flex-1">
-                    <div className="font-semibold text-white text-sm">
-                      {card.bank} {card.name}
-                    </div>
+                <div className="flex items-start gap-3 mb-3">
+                  <div className={`w-10 h-6 rounded-md bg-gradient-to-r ${card.color} shrink-0 mt-0.5`} />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs text-white/50 font-normal">{card.bank}</div>
+                    <div className="font-semibold text-white text-sm break-words">{card.name}</div>
                     {cardTransactions.length > 0 && (
-                      <div className="text-[10px] text-white/40">
+                      <div className="text-[10px] text-white/40 mt-1">
                         {cardTransactions.length} 筆交易
                       </div>
                     )}

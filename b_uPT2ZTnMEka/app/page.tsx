@@ -28,8 +28,7 @@ export default function HomePage() {
     {}
   )
   const [transactions, setTransactions] = useLocalStorage<Transaction[]>('transactions', [])
-  // Track which registration bonuses have been activated (cardId:bonusIndex)
-  const [registeredBonuses, setRegisteredBonuses] = useLocalStorage<string[]>('registered-bonuses', [])
+  const [registeredBonuses, setRegisteredBonuses] = useLocalStorage<Record<string, number[]>>('registered-bonuses', {})
   const [lastTransaction, setLastTransaction] = useState<Transaction | null>(null)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
 
