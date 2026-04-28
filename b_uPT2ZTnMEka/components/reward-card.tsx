@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { TriangleAlert as AlertTriangle, Zap, Lock, Check, Plane } from 'lucide-react'
+import { AlertTriangle, Zap, Lock, Check, Plane } from 'lucide-react'
 import { useState } from 'react'
 import { CreditCard, Category, calculateReward, getCardDescription } from '@/lib/cards-config'
 
