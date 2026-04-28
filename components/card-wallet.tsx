@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Wallet, ChevronRight, CheckCircle2, X, AlertTriangle, Zap, Lock } from 'lucide-react'
+import { Wallet, ChevronRight, CircleCheck as CheckCircle2, X, TriangleAlert as AlertTriangle, Zap, Lock } from 'lucide-react'
 import { CARDS_CONFIG, CreditCard, Category, CATEGORIES, calculateReward, getCardRule } from '@/lib/cards-config'
 
 interface CardWalletProps {
